@@ -1,0 +1,38 @@
+{
+  "appVersion": "1.0.0",
+
+  "apiUrl": "api",
+  "loginUrl": "api/auth/arcgis",
+  "logoutUrl": "api/logout",
+  "jsapiUrl": "https://js.arcgis.com/4.12/",
+  "jsapiV4": true,
+
+  "clientId": "hkdtqXBMmZ8JJ5tD",
+
+  "mapLayers": {
+    "unitLayerUrl": "http://services5.arcgis.com/2j6RLW7Jge6dxQ4l/ArcGIS/rest/services/mgds_training_units/FeatureServer/0",
+    "hospitalsLayerUrl": "http://services5.arcgis.com/2j6RLW7Jge6dxQ4l/ArcGIS/rest/services/mgds_training_hospitals/FeatureServer/0",
+    "SketchLayerName": "SketchLayer"
+  },
+
+  "grid": {
+    "ag-column": [
+      {"headerName": "Name", "field": "Name" }, 
+      { "headerName": "Type", "field": "Type" },
+      { "headerName": "Long", "field": "Longitude" },
+      { "headerName": "Lat", "field": "Latitude" }
+    ],
+    "kendo-column": [
+      { "field": "Name", "title": "Name" },
+      { "field": "Type", "title": "Type" },
+      { "field": "Longitude", "title": "Long" },
+      { "field": "Latitude", "title": "Lat" }
+    ]
+  },
+
+  "mapConfig": {
+    "basemap": "streets",
+    "center": [-118.24368, 34.05223],
+    "zoom": 10
+  }
+}
