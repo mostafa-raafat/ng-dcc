@@ -1,6 +1,6 @@
 // React imports
 import React, { useEffect } from "react";
-import { useSelector, connect } from "react-redux";
+import { connect } from "react-redux";
 import { AgGridReact } from 'ag-grid-react';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -11,50 +11,22 @@ import styled from "styled-components";
 import ZoomToPointButton from '../button/button';
 
 const AgGridContainer = styled.div`
-  height: 200px;
-  width: 50%;
+    height: 100%;
+    width: 100%;
 `;
 
 const Container = styled.div`
   display: flex;
-`;
-
-const KendoGridContainer = styled.div`
-  width: 50%;
-  height: 200px;
+  height: 100%;
 `;
 
 const Grid = props => {
-
-    const gridData = useSelector(state => state.grid.gridData);
-    const mapView = useSelector(state => state.map.mapView);
-
     useEffect(() => {
-        if (gridData.length === 0) {
+        if (props.gridData.length === 0) {
             return;
         }
-    }, [gridData]);
-
-    useEffect(() => {
-        window.$(document).ready(function () {
-            window.$(document).ready(function () {
-                window.$("#kendoGrid").kendoGrid({
-                    dataSource: {
-                        data: gridData,
-                        pageSize: 20
-                    },
-                    height: 200,
-                    columns: gridConfig['kendo-column']
-                });
-            });
-        });
-    });
-
-    const zoomToPoint = (event) => {
-        console.log('too', event, mapView);
-        mapView.goTo({ target: [-118.24368, 34.05223], zoom: 15 });
-        event.preventDefault();
-    }
+        console.log('test');
+    }, [props.gridData]);
 
     const gridConfig = {
         "ag-column": [
@@ -65,11 +37,6 @@ const Grid = props => {
             { "headerName": "Long", "field": "Longitude" },
             { "headerName": "Lat", "field": "Latitude" }
 
-        ],
-        "kendo-column": [
-            { "field": "Longitude", "title": "Long" },
-            { "field": "Latitude", "title": "Lat" },
-            { command: { text: "Zoom", click: () => zoomToPoint(mapView) , title: "Zoom", width: "100px" } }
         ]
     }
 
@@ -79,10 +46,9 @@ const Grid = props => {
                 <AgGridReact
                     reactNext={true}
                     columnDefs={gridConfig['ag-column']}
-                    rowData={gridData}>
+                    rowData={props.gridData}>
                 </AgGridReact>
             </AgGridContainer>
-            <KendoGridContainer id="kendoGrid"></KendoGridContainer>
         </Container>
     );
 }

@@ -6,31 +6,29 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { initStore } from "./redux/store";
 
-// React Router //
-import { BrowserRouter, Route } from "react-router-dom";
-
 // Components //
-import { homepage } from "../package.json";
 import App from "./components/App";
 
 // Styles //
 import { GlobalStyle } from "./styles/global";
-import "./styles/fonts.css";
 
-// App runs at the root locally, but under /{homepage} in production
-let basename;
-process.env.NODE_ENV !== "production" ? (basename = "") : (basename = homepage);
+//golden-layout css files
+import "golden-layout/src/css/goldenlayout-base.css";
+import "golden-layout/src/css/goldenlayout-dark-theme.css";
+import "./styles/fonts.css";
 
 // Create Redux Store
 export const store = initStore();
 
+//required for golden-layouts
+window.React = React;
+window.ReactDOM = ReactDOM;
+
 // App entry point
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter basename={basename}>
-      <GlobalStyle />
-      <Route path="/" component={App} />
-    </BrowserRouter>
+    <GlobalStyle />
+    <App />
   </Provider>,
   document.getElementById("root")
 );

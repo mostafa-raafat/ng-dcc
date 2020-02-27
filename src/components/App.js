@@ -1,49 +1,54 @@
 // React imports
-import React, { useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { Component } from "react";
 
 // Redux imports
-import { useSelector, useDispatch } from "react-redux";
+import { connect, ReactReduxContext, } from "react-redux";
 import { fetchConfig } from "../redux/reducers/config";
 
 // Component imports
 import LoadScreen from "./loading-screen/loading-screen";
-import Main from "./Main";
+import GoldenLayoutWrapper from "./GoldenLayoutWrapper";
 
-// Component definition
-const App = props => {
-  // redux store state
-  const config = useSelector(state => state.config);
-  const dispatch = useDispatch();
+class App extends Component {
 
-  // when the component mounts request the config and load it into the Redux state
-  useEffect(() => {
-    dispatch(fetchConfig());
-  }, [dispatch]);
-
-  // once the component mounts and the config loads, check if we have a saved session
-  useEffect(() => {
-    // if the config isn't yet loaded then skip this effect
-    if (!config.loaded) {
-      return;
-    }
-
-  }, [config]);
-
-  // RENDER RETURN
-  // app is initializing for the following reasons, show the load screen
-  // 1. config is not yet loaded
-  if (!config.loaded){
-    return <LoadScreen />;
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
 
-  // App is initialized and user is authenticated if needed, route to main component
-  return (
-    <>
-      <Route path="/main" component={Main} />
-      <Redirect to="/main" />
-    </>
-  );
-};
+  componentDidMount() {
+    this.props.fetchConfig();
+  }
 
-export default App;
+  render() {
+    // RENDER RETURN
+    // app is initializing for the following reasons, show the load screen
+    // 1. config is not yet loaded
+    if (!this.props.config.loaded) {
+      return <LoadScreen />;
+    } else {
+      return (
+        <ReactReduxContext.Consumer>
+          {({ store }) => <div><GoldenLayoutWrapper store={store} /></div>}
+        </ReactReduxContext.Consumer>
+      )
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    config: state.config
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchConfig: () => dispatch(fetchConfig())
+  }
+}
+
+export default (App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App));

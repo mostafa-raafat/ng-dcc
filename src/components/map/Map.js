@@ -9,7 +9,7 @@
 
 // React imports
 import React from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { mapLoaded } from '../../redux/reducers/map'
 import { setGridData } from '../../redux/reducers/grid'
 
@@ -28,10 +28,14 @@ const Container = styled.div`
 const Map = props => {
   // set an ID for the map to attach to
   const containerID = "map-view-container";
+
+  const mapConfig = useSelector(state => state.config.mapConfig);
+  const mapLayers = useSelector(state => state.config.mapLayers);
+
   const dispatch = useDispatch();
 
   // load map with config properties
-  loadMap(containerID, props.mapConfig, props.mapLayers).then((response) => {
+  loadMap(containerID, mapConfig, mapLayers).then((response) => {
     // call the map loaded event when we get the map view back
     dispatch(mapLoaded(response.mapView));
     dispatch(setGridData(response.gridData));

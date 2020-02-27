@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 const ZoomToPointButton = React.forwardRef((props, ref) => {
     const zoomToPoint = () => {
         props.mapView.goTo({ target: [props.data.Longitude, props.data.Latitude], zoom: 15 });
+        props.increment();
+        props.incrementCart();
     }
     return (
         <div>
@@ -14,7 +16,15 @@ const ZoomToPointButton = React.forwardRef((props, ref) => {
 })
 
 const mapStateToProps = (state) => ({
-    mapView: state.map.mapView
+    mapView: state.map.mapView,
+    gridData: state.grid.gridData
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(ZoomToPointButton)
+const mapDispatchToProps = dispatch => {
+    return {
+      increment: () => dispatch({ type: 'INCREMENT_LONG' }),
+      incrementCart: () => dispatch({ type: 'INCREMENT_CHART' })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(ZoomToPointButton)
